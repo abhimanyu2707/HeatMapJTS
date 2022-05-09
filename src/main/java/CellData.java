@@ -12,7 +12,6 @@ public class CellData implements Serializable {
     public CellData(String pais_uid, String markup_id, String polygonStr) throws ParseException {
         this.pais_uid = pais_uid;
         this.markup_id = markup_id;
-        System.out.println("Hi: " + polygonStr);
         WKTReader reader = new WKTReader();
         this.polygon = reader.read(polygonStr);
     }

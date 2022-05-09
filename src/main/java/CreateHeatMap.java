@@ -3,10 +3,11 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.sql.SQLContext;
-import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class CreateHeatMap {
-    public static void main(String[] args) throws ParseException { //Driver
+    public static void main(String[] args) { //Driver
 
         /* Initialize SparkConf */
         SparkConf conf = new SparkConf()
@@ -17,6 +18,7 @@ public class CreateHeatMap {
         conf.set("textinputformat.record.delimiter", "\n");
 
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
+        ImageData imageData = new ImageData();
         JavaRDD<String> paisCSV = sparkContext.textFile("/Users/abhimanyu/Stony_Brook/Advanced_Project/PAIS/pais_1_subset.csv");
         SQLContext sqlContext = new SQLContext(sparkContext);
         JavaRDD<CellData> rdd_records = paisCSV.map(
@@ -29,6 +31,10 @@ public class CreateHeatMap {
                     }
                 });
         System.out.println(paisCSV.first());
+        rdd_records.foreach(x -> imageData.addToGeometryCollection(x.getPolygon()));
         System.out.println("Cell data: " + rdd_records.first().getPolygon().toString());
+        imageData.updateGeometryCollection();
+        Geometry bb = imageData.getBoundingBox();
+        System.out.println("Bounding Box: " + bb.getGeometryType());
     }
 }
