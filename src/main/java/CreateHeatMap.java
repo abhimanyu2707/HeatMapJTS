@@ -49,6 +49,8 @@ public class CreateHeatMap {
 
         for (int i = 0; i < Constant.TILES_COUNT; i++) {
             for (int j = 0; j < Constant.TILES_COUNT; j++) {
+                int finalI = i;
+                int finalJ = j;
                 CellData countCell = cellRDD.reduce(
                         new Function2<CellData, CellData, CellData>(){
                             @Override
@@ -56,15 +58,15 @@ public class CreateHeatMap {
                                 Integer v1Counts = 0, v2Counts = 0;
                                 if (v1.getCounts() >= 0)
                                     v1Counts = v1.getCounts();
-                                else if (tiles.getGeometryTiles()[0][0].contains(v1.getPolygon()))
+                                else if (tiles.getGeometryTiles()[finalI][finalJ].contains(v1.getPolygon()))
                                     v1Counts = 2;
-                                else if (tiles.getGeometryTiles()[0][0].intersects(v1.getPolygon()))
+                                else if (tiles.getGeometryTiles()[finalI][finalJ].intersects(v1.getPolygon()))
                                     v1Counts = 1;
                                 if (v2.getCounts() >= 0)
                                     v2Counts = v2.getCounts();
-                                else if (tiles.getGeometryTiles()[0][0].contains(v2.getPolygon()))
+                                else if (tiles.getGeometryTiles()[finalI][finalJ].contains(v2.getPolygon()))
                                     v2Counts = 2;
-                                else if (tiles.getGeometryTiles()[0][0].intersects(v2.getPolygon()))
+                                else if (tiles.getGeometryTiles()[finalI][finalJ].intersects(v2.getPolygon()))
                                     v2Counts = 1;
                                 CellData c = new CellData();
                                 c.setCounts(v1Counts+v2Counts);
