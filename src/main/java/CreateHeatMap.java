@@ -87,6 +87,7 @@ public class CreateHeatMap {
         System.out.println("Full Bounding box polygon: " + boundingBoxCell.getPolygon().toString());
         System.out.println(boundingBoxCellEnvelope.getMinX() + " "+ boundingBoxCellEnvelope.getMinY() + " "+ boundingBoxCellEnvelope.getMaxX() + " "+ boundingBoxCellEnvelope.getMaxY() );
 
+        tiles.dumpDataToCsv();
         //(c1, c2) -> c1.getEnvelope().union(c2.getEnvelope()));
 //        System.out.println(paisCSV.first());
 //        List<CellData> allCells = cellRDD.collect();
